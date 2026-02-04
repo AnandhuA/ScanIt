@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import 'api_urls.dart';
 
 class DioClient {
@@ -8,8 +9,9 @@ class DioClient {
     _dio ??= Dio(
       BaseOptions(
         baseUrl: ApiUrls.baseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
+        connectTimeout: const Duration(seconds: 20),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 20),
         headers: {
           'Content-Type': 'application/json',
         },

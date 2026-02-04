@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:scan_it/app/routes/app_routes.dart';
+import 'package:scan_it/app/theme/app_colors.dart';
 
 import 'scanner_controller.dart';
 
@@ -24,7 +26,7 @@ class ScannerView extends GetView<ScannerController> {
 
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: SpinKitSpinningLines(color: AppColors.white));
         }
 
         return Stack(
@@ -40,11 +42,12 @@ class ScannerView extends GetView<ScannerController> {
                 await controller.fetchProduct(code);
 
                 if (controller.product.value != null) {
-                  Get.toNamed(
+                  Get.offNamed(
                     Routes.PRODUCT,
                     arguments: controller.product.value!,
                   );
                 } else {
+                  Get.offAllNamed(Routes.HOME);
                   Get.snackbar("Not Found", "Product not available");
                 }
               },

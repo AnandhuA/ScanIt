@@ -1,26 +1,33 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:scan_it/data/models/product_model.dart';
 import 'package:scan_it/data/network/dio_client.dart';
+import 'package:scan_it/utils/helper_classes/error_helper.dart';
 
 class ApiProvider {
   final Dio _dio = DioClient.instance;
 
-  Future<Map<String, dynamic>?> getProduct(String code) async {
+  Future<ProductModel?> getProduct(String code) async {
     try {
       final response = await _dio.get('$code.json');
 
-      if (response.statusCode == 200) {
-        final data = response.data;
+      final data = response.data;
 
-        if (data != null && data['status'] == 1) {
-          return Map<String, dynamic>.from(data['product']);
+      if (response.statusCode == 200 && data != null) {
+        if (data['status'] == 1 && data['product'] != null) {
+          return ProductModel.fromJson(data['product']);
+        } else {
+          Get.snackbar("Not Found", "Product not found");
         }
       }
+    } on DioException catch (e) {
+      Get.snackbar("Error", ErrorHelper.getErrorMessage(e));
     } catch (e) {
-      log('API Error: $e');
+      Get.snackbar("Error", "Something went wrong");
     }
 
     return null;
   }
+
 }

@@ -1,59 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scan_it/data/models/product_model.dart';
+import 'package:scan_it/widgets/network_image_loader.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Map product = Get.arguments;
+    final ProductModel product = Get.arguments;
 
-    // ✅ Get nutriments safely
-    final Map nutriments = product['nutriments'] ?? {};
+    final data = product.rawData;
 
     return Scaffold(
-      appBar: AppBar(title: Text(product['product_name'] ?? 'Product')),
+      appBar: AppBar(title: Text(product.name)),
 
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16),
 
-        child: ListView(
+        children: [
+
+          // Image
+          if (product.imageUrl.isNotEmpty)
+            Center(
+              child: NetworkImageWithLoader(
+                imageUrl: product.imageUrl,
+                height: 200,
+              ),
+            ),
+
+          const SizedBox(height: 16),
+
+          _section("Basic Info", {
+            "Name": product.name,
+            "Brand": product.brand,
+            "Quantity": product.quantity,
+            "Barcode": data['code'],
+          }),
+
+          _section("Ingredients", {
+            "Text": data['ingredients_text'],
+            "Allergens": data['allergens'],
+            "Traces": data['traces'],
+          }),
+
+          _section("Categories & Labels", {
+            "Categories": data['categories'],
+            "Labels": data['labels'],
+            "Packaging": data['packaging'],
+          }),
+
+          _section("Nutrition (100g)", {
+            "Calories": "${product.energyKcal} kcal",
+            "Sugar": "${product.sugar} g",
+            "Protein": "${product.protein} g",
+            "Fat": "${product.fat} g",
+            "Salt": "${product.salt} g",
+          }),
+
+          _section("Manufacturing", {
+            "Countries": data['countries'],
+            "Origins": data['origins'],
+            "Stores": data['stores'],
+            "Manufacturing Places": data['manufacturing_places'],
+          }),
+
+          _section("Other Info", {
+            "Nova Group": data['nova_group'],
+            "Eco Score": data['ecoscore_grade'],
+            "Nutri Score": data['nutriscore_grade'],
+            "Additives": data['additives_tags']?.join(', '),
+          }),
+        ],
+      ),
+    );
+  }
+
+  /// Dynamic section builder
+  Widget _section(String title, Map<String, dynamic> items) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
-            // Product Name
+
             Text(
-              product['product_name'] ?? 'No Name',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-
-            const SizedBox(height: 10),
-
-            // Brand
-            Text("Brand: ${product['brands'] ?? 'N/A'}"),
 
             const Divider(),
 
-            // Ingredients
-            const Text(
-              "Ingredients:",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            ...items.entries.map((e) {
+              final value = e.value;
 
-            Text(product['ingredients_text'] ?? 'Not Available'),
+              if (value == null ||
+                  value.toString().isEmpty ||
+                  value == "null") {
+                return const SizedBox();
+              }
 
-            const Divider(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
 
-            // Nutrition
-            const Text(
-              "Nutrition (per 100g)",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-            const SizedBox(height: 6),
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        "${e.key}:",
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
 
-            Text("Calories: ${nutriments['energy-kcal_100g'] ?? 'N/A'} kcal"),
-            Text("Sugar: ${nutriments['sugars_100g'] ?? 'N/A'} g"),
-            Text("Protein: ${nutriments['proteins_100g'] ?? 'N/A'} g"),
-            Text("Fat: ${nutriments['fat_100g'] ?? 'N/A'} g"),
+                    Expanded(flex: 5, child: Text(value.toString())),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),

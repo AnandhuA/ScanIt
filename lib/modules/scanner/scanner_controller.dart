@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:scan_it/data/models/product_model.dart';
 import 'package:scan_it/data/providers/api_provider.dart';
 
 class ScannerController extends GetxController {
@@ -6,7 +7,7 @@ class ScannerController extends GetxController {
   final ApiProvider _api = ApiProvider();
 
   var isLoading = false.obs;
-  var product = Rxn<Map<String, dynamic>>();
+   Rx<ProductModel?> product = Rx<ProductModel?>(null);
 
   Future<void> fetchProduct(String code) async {
 
