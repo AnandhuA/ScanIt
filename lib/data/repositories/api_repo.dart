@@ -5,7 +5,7 @@ import 'package:scan_it/data/models/product_model.dart';
 import 'package:scan_it/data/network/dio_client.dart';
 import 'package:scan_it/utils/helper_classes/error_helper.dart';
 
-class ApiProvider {
+class ApiRepo {
   final Dio _dio = DioClient.instance;
 
   Future<ProductModel?> getProduct(String code) async {

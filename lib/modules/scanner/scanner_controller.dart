@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:scan_it/data/models/product_model.dart';
-import 'package:scan_it/data/providers/api_provider.dart';
+import 'package:scan_it/data/repositories/api_repo.dart';
 
 class ScannerController extends GetxController {
 
-  final ApiProvider _api = ApiProvider();
+  final ApiRepo _api = ApiRepo();
 
   var isLoading = false.obs;
    Rx<ProductModel?> product = Rx<ProductModel?>(null);
