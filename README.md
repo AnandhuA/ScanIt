@@ -1,16 +1,36 @@
-# scan_it
+# 📱 Scan It - Barcode Scanner App (Flutter)
 
-A new Flutter project.
+Scan It is a Flutter-based mobile application that allows users to scan product barcodes and fetch detailed product information using the OpenFoodFacts API.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
 
-A few resources to get you started if this is your first Flutter project:
+- 📷 Barcode scanning using device camera
+- 🌐 Fetch product details from OpenFoodFacts API
+- 🖼 Display product images with loading indicator
+- 📊 Show nutrition and ingredient information
+- ⚡ Fast and lightweight UI
+- 📱 Works on Android & iOS
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠 Tech Stack
+
+- **Framework:** Flutter
+- **State Management:** GetX
+- **Networking:** Dio
+- **Barcode Scanner:** mobile_scanner
+- **Image Caching:** cached_network_image / custom loader
+- **UI Loader:** flutter_spinkit
+
+---
+
+## 📦 Dependencies
+
+```yaml
+get
+dio
+mobile_scanner
+cached_network_image
+flutter_spinkit
