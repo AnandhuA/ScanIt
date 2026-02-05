@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:scan_it/modules/home/home_binding.dart';
 import 'package:scan_it/modules/home/home_screen.dart';
 import 'package:scan_it/modules/product/product_view_screen.dart';
 import 'package:scan_it/modules/scanner/scanner_screen.dart';
@@ -15,8 +16,8 @@ class AppPages {
 
     GetPage(
       name: Routes.HOME,
-      page: () => const HomeScreen(),
-      // binding: ScannerBinding(),
+      page: () => HomeScreen(),
+      binding: HomeBinding(),
     ),
 
     GetPage(
